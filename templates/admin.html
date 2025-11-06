@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard - INWMH Studios</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    h2 { text-align: center; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #3a86ff; color: white; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    button { padding: 6px 12px; border: none; background: #ef476f; color: #fff; cursor: pointer; border-radius: 4px; }
+    button:hover { opacity: 0.85; }
+    .cancelled { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>INWMH Studio Bookings</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Time Slot</th>
+        <th>Setup</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr>
+        <td>{{ b.id }}</td>
+        <td>{{ b.name }}</td>
+        <td>{{ b.email }}</td>
+        <td>{{ b.date }}</td>
+        <td>{{ b.time_slot }}</td>
+        <td>{{ b.setup }}</td>
+        <td class="{{ 'cancelled' if b.status == 'cancelled' else '' }}">{{ b.status }}</td>
+        <td>
+          {% if b.status != 'cancelled' %}
+          <form method="POST" action="/cancel/{{ b.id }}" style="display:inline;">
+            <button type="submit">Cancel</button>
+          </form>
+          {% else %}
+          —
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
