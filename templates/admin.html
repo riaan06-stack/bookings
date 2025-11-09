@@ -1,56 +1,596 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Dashboard - INWMH Studios</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    h2 { text-align: center; margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #3a86ff; color: white; }
-    tr:nth-child(even) { background: #f9f9f9; }
-    button { padding: 6px 12px; border: none; background: #ef476f; color: #fff; cursor: pointer; border-radius: 4px; }
-    button:hover { opacity: 0.85; }
-    .cancelled { color: red; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - INWMH Studios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+:root {
+    --primary-black: #0a0a0a;
+    --secondary-black: #1a1a1a;
+    --olive-dark: #3d4a2c;
+    --olive-main: #5a6c3f;
+    --olive-light: #7a8c5f;
+    --olive-accent: #9aac7f;
+    --white: #ffffff;
+    --off-white: #f8f9f5;
+    --cream: #e8ebe0;
+    --shadow: rgba(10, 10, 10, 0.3);
+    --shadow-heavy: rgba(10, 10, 10, 0.5);
+    --accent-danger: #ef4444;
+    --accent-success: #10b981;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 50%, var(--olive-dark) 100%);
+    min-height: 100vh;
+    color: var(--off-white);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.geo-shape {
+    position: fixed;
+    opacity: 0.08;
+    z-index: 0;
+    filter: blur(40px);
+}
+
+.circle {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: var(--olive-main);
+    top: -150px;
+    right: -150px;
+}
+
+.triangle {
+    width: 300px;
+    height: 300px;
+    background: var(--olive-light);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    bottom: -100px;
+    left: -100px;
+}
+
+.square {
+    width: 200px;
+    height: 200px;
+    background: var(--olive-accent);
+    bottom: 20%;
+    right: 20%;
+    transform: rotate(45deg);
+}
+
+header {
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 40px var(--shadow-heavy);
+    position: relative;
+    z-index: 10;
+    border-bottom: 2px solid var(--olive-dark);
+}
+
+header h2 {
+    color: var(--olive-accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px var(--shadow);
+}
+
+header h2 i {
+    color: var(--olive-main);
+    margin-right: 0.5rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-download, .btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-download {
+    background: linear-gradient(135deg, var(--olive-main), var(--olive-light));
+    color: var(--white);
+    box-shadow: 0 5px 20px rgba(90, 108, 63, 0.3);
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(90, 108, 63, 0.5);
+}
+
+.btn-logout {
+    background: var(--accent-danger);
+    color: var(--white);
+    box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
+}
+
+.btn-logout:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+}
+
+main {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 40px var(--shadow-heavy);
+    border: 2px solid var(--olive-dark);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(90, 108, 63, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.stat-box:hover::before {
+    left: 100%;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    border-color: var(--olive-main);
+    box-shadow: 0 15px 50px var(--shadow-heavy);
+}
+
+.stat-box h3 {
+    color: var(--olive-accent);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.stat-box p {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--olive-light);
+    text-shadow: 2px 2px 4px var(--shadow);
+}
+
+.search-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--olive-dark);
+    border-radius: 10px;
+    font-size: 1rem;
+    background: var(--primary-black);
+    backdrop-filter: blur(10px);
+    color: var(--off-white);
+    transition: all 0.3s ease;
+}
+
+#searchInput::placeholder {
+    color: var(--olive-accent);
+    opacity: 0.7;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--olive-main);
+    background: rgba(90, 108, 63, 0.05);
+    box-shadow: 0 0 0 3px rgba(90, 108, 63, 0.1);
+}
+
+.debug-info {
+    background: rgba(61, 74, 44, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--cream);
+    border: 1px solid var(--olive-dark);
+}
+
+.debug-info a {
+    color: var(--olive-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.debug-info a:hover {
+    color: var(--olive-light);
+    text-decoration: underline;
+}
+
+table {
+    width: 100%;
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px var(--shadow-heavy);
+    border-collapse: collapse;
+    border: 2px solid var(--olive-dark);
+}
+
+thead {
+    background: linear-gradient(135deg, var(--olive-dark), var(--olive-main));
+    color: var(--white);
+}
+
+th {
+    padding: 1.25rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px var(--shadow);
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--olive-dark);
+    transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+    background: rgba(90, 108, 63, 0.1);
+    transform: scale(1.01);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    padding: 1.25rem 1rem;
+    font-size: 0.95rem;
+    color: var(--cream);
+}
+
+td strong {
+    color: var(--olive-accent);
+    font-weight: 700;
+}
+
+.cancelled {
+    color: var(--accent-danger);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-cancel {
+    background: var(--accent-danger);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-cancel:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(239, 68, 68, 0.4);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(26, 26, 26, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 20px 60px var(--shadow-heavy);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--olive-dark);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--olive-accent);
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    color: var(--olive-accent);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.empty-state p {
+    color: var(--cream);
+    margin-bottom: 2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--olive-accent);
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        border-radius: 10px;
+    }
+
+    .btn-download, .btn-logout {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+
+    .stat-box p {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h2 {
+        font-size: 1.2rem;
+    }
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    #searchInput {
+        width: 100%;
+    }
+}
+    </style>
 </head>
 <body>
-  <h2>INWMH Studio Bookings</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Date</th>
-        <th>Time Slot</th>
-        <th>Setup</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for b in bookings %}
-      <tr>
-        <td>{{ b.id }}</td>
-        <td>{{ b.name }}</td>
-        <td>{{ b.email }}</td>
-        <td>{{ b.date }}</td>
-        <td>{{ b.time_slot }}</td>
-        <td>{{ b.setup }}</td>
-        <td class="{{ 'cancelled' if b.status == 'cancelled' else '' }}">{{ b.status }}</td>
-        <td>
-          {% if b.status != 'cancelled' %}
-          <form method="POST" action="/cancel/{{ b.id }}" style="display:inline;">
-            <button type="submit">Cancel</button>
-          </form>
-          {% else %}
-          —
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <div class="geo-shape circle"></div>
+    <div class="geo-shape triangle"></div>
+    <div class="geo-shape square"></div>
+
+    <header>
+        <h2><i class="fas fa-sliders-h"></i> INWMH Studio Admin Dashboard</h2>
+        <div class="header-actions">
+            <a href="/download-excel" class="btn-download">
+                <i class="fas fa-download"></i> <span>Download Excel</span>
+            </a>
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="stats">
+            <div class="stat-box">
+                <h3>Total Bookings</h3>
+                <p id="total-bookings">{{ total_bookings }}</p>
+            </div>
+            <div class="stat-box">
+                <h3>Active</h3>
+                <p id="active-bookings">{{ active_bookings }}</p>
+            </div>
+            <div class="stat-box">
+                <h3>Cancelled</h3>
+                <p id="cancelled-bookings">{{ cancelled_bookings }}</p>
+            </div>
+            <div class="stat-box">
+                <h3>Total Revenue</h3>
+                <p id="total-revenue">${{ "%.2f"|format(total_revenue) }}</p>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="🔍 Search bookings...">
+            <a href="/admin" class="btn-download">
+                <i class="fas fa-sync-alt"></i> <span>Refresh</span>
+            </a>
+        </div>
+
+        <!-- Debug Info -->
+        <div class="debug-info">
+            <strong>Debug Info:</strong> 
+            Total Bookings: {{ total_bookings }} | 
+            Active: {{ active_bookings }} | 
+            Cancelled: {{ cancelled_bookings }} |
+            Revenue: ${{ "%.2f"|format(total_revenue) }} |
+            <a href="/debug-data" style="color: #666; margin-left: 1rem;">View Raw Data</a> |
+            <a href="/create-test-booking" style="color: #666;">Create Test Data</a>
+        </div>
+
+        {% if bookings and bookings|length > 0 %}
+        <table id="bookingsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Setup</th>
+                    <th>Package</th>
+                    <th>Total Cost</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td><strong>{{ booking.id or 'N/A' }}</strong></td>
+                    <td>{{ booking.name or 'N/A' }}</td>
+                    <td>{{ booking.email or 'N/A' }}</td>
+                    <td>{{ booking.phone or 'N/A' }}</td>
+                    <td>{{ booking.date or 'N/A' }}</td>
+                    <td>{{ booking.time_slot or 'N/A' }}</td>
+                    <td>{{ booking.setup or 'N/A' }}</td>
+                    <td>{{ booking.package or 'N/A' }}</td>
+                    <td>${{ booking.total_cost or '0' }}</td>
+                    <td class="{{ 'cancelled' if booking.status == 'cancelled' else '' }}">
+                        {{ booking.status or 'booked' }}
+                    </td>
+                    <td>
+                        {% if booking.status != 'cancelled' %}
+                        <form method="POST" action="/cancel/{{ booking.id }}" style="display:inline;">
+                            <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                <i class="fas fa-times"></i> <span>Cancel</span>
+                            </button>
+                        </form>
+                        {% else %}
+                        —
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-database"></i>
+            <h3>No Bookings Found</h3>
+            <p>The system has no booking data yet. Submit a booking through the main form first.</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="/create-test-booking" class="btn-download" style="display: inline-flex;">
+                    <i class="fas fa-plus"></i> Create Test Booking
+                </a>
+                <a href="/" class="btn-download" style="display: inline-flex; margin-left: 1rem; background: var(--accent-success);">
+                    <i class="fas fa-calendar-plus"></i> Go to Booking Form
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        © <script>document.write(new Date().getFullYear());</script> INWMH Studios — Admin Access Only
+    </footer>
+
+    <script>
+        console.log('Admin Dashboard Loaded');
+        
+        // Search functionality
+        document.getElementById('searchInput')?.addEventListener('keyup', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#bookingsTable tbody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const isVisible = text.includes(filter);
+                row.style.display = isVisible ? '' : 'none';
+                if (isVisible) visibleCount++;
+            });
+            
+            console.log(`Search: "${filter}", Found: ${visibleCount} rows`);
+        });
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/logout';
+            }
+        }
+
+        // Add confirmation to all cancel forms
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelForms = document.querySelectorAll('form[action^="/cancel/"]');
+            cancelForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (!confirm('Are you sure you want to cancel this booking?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            console.log('Auto-refreshing admin dashboard...');
+            window.location.reload();
+        }, 30000);
+    </script>
 </body>
 </html>
