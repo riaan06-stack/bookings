@@ -2,72 +2,281 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | INWMH Studios</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f6fa;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
             padding: 20px;
+            color: #e2e8f0;
+        }
+
+        .header {
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .table-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: calc(100vh - 280px);
+            overflow-y: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         th, td {
-            padding: 12px;
-            border-bottom: 1px solid #eaeaea;
+            padding: 14px 16px;
             text-align: left;
-            font-size: 14px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(100, 116, 139, 0.3);
         }
 
         th {
-            background: #4b7bec;
-            color: white;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #fff;
+            font-weight: 600;
             position: sticky;
             top: 0;
+            z-index: 10;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
-        tr:hover {
-            background: #f1f2f6;
+        td {
+            color: #cbd5e1;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 1.1rem;
         }
 
         .logout-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #eb3b5a;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
-            padding: 10px 18px;
-            border-radius: 10px;
+            padding: 12px 24px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            display: inline-block;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.1rem;
+            color: #94a3b8;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .status-confirmed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Scrollbar styling */
+        .table-wrapper::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 5px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            th, td {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<a href="/logout" class="logout-btn">Logout</a>
+<div class="header">
+    <h2>📊 Booking Dashboard</h2>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
-<h2>All Bookings</h2>
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Total Bookings</h3>
+        <div class="stat-value" id="totalBookings">0</div>
+    </div>
+    <div class="stat-card">
+        <h3>This Month</h3>
+        <div class="stat-value" id="monthBookings">0</div>
+    </div>
+    <div class="stat-card">
+        <h3>Today</h3>
+        <div class="stat-value" id="todayBookings">0</div>
+    </div>
+    <div class="stat-card">
+        <h3>Upcoming</h3>
+        <div class="stat-value" id="upcomingBookings">0</div>
+    </div>
+</div>
 
-<table>
-    <thead>
-        <tr id="table-head"></tr>
-    </thead>
-    <tbody id="table-body"></tbody>
-</table>
+<div class="table-container">
+    <div class="table-wrapper">
+        <div class="loading" id="loading">Loading bookings</div>
+        <table id="bookingsTable" style="display: none;">
+            <thead>
+                <tr id="table-head"></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+</div>
 
 <script>
 (async function () {
@@ -75,19 +284,49 @@
         const res = await fetch("/api/bookings");
         const json = await res.json();
 
+        const loading = document.getElementById("loading");
+        const table = document.getElementById("bookingsTable");
+
         if (json.status !== "success") {
-            alert("Failed to load bookings");
+            loading.innerHTML = "❌ Failed to load bookings";
             return;
         }
 
         const data = json.bookings;
 
         if (!data || data.length === 0) {
-            document.getElementById("table-body").innerHTML =
-                "<tr><td colspan='20'>No bookings found</td></tr>";
+            loading.innerHTML = "<div class='empty-state'>📭 No bookings found</div>";
             return;
         }
 
+        // Calculate statistics
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        
+        const todayCount = data.filter(b => {
+            const bookingDate = new Date(b.date);
+            bookingDate.setHours(0, 0, 0, 0);
+            return bookingDate.getTime() === today.getTime();
+        }).length;
+        
+        const monthCount = data.filter(b => {
+            const bookingDate = new Date(b.date);
+            return bookingDate >= thisMonth;
+        }).length;
+        
+        const upcomingCount = data.filter(b => {
+            const bookingDate = new Date(b.date);
+            return bookingDate >= today;
+        }).length;
+
+        document.getElementById("totalBookings").textContent = data.length;
+        document.getElementById("monthBookings").textContent = monthCount;
+        document.getElementById("todayBookings").textContent = todayCount;
+        document.getElementById("upcomingBookings").textContent = upcomingCount;
+
+        // Build table
         const headers = Object.keys(data[0]);
         const headRow = document.getElementById("table-head");
         const body = document.getElementById("table-body");
@@ -95,7 +334,7 @@
         // Headers
         headers.forEach(h => {
             const th = document.createElement("th");
-            th.textContent = h;
+            th.textContent = h.replace(/_/g, ' ');
             headRow.appendChild(th);
         });
 
@@ -104,15 +343,31 @@
             const tr = document.createElement("tr");
             headers.forEach(h => {
                 const td = document.createElement("td");
-                td.textContent = row[h] ?? "";
+                const value = row[h] ?? "";
+                
+                // Add status badge if it's a status column
+                if (h.toLowerCase() === 'status') {
+                    const badge = document.createElement('span');
+                    badge.className = `status-badge status-${value.toLowerCase()}`;
+                    badge.textContent = value;
+                    td.appendChild(badge);
+                } else {
+                    td.textContent = value;
+                }
+                
                 tr.appendChild(td);
             });
             body.appendChild(tr);
         });
 
+        // Show table, hide loading
+        loading.style.display = "none";
+        table.style.display = "table";
+
     } catch (err) {
         console.error("Admin dashboard error:", err);
-        alert("Error loading admin data. Check console.");
+        document.getElementById("loading").innerHTML = 
+            "<div class='empty-state'>❌ Error loading dashboard data</div>";
     }
 })();
 </script>
