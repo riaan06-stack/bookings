@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - INWMH Studios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .payment-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .payment-content {
+            padding: 30px;
+        }
+
+        .booking-summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-title {
+            color: #4f46e5;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-title i {
+            font-size: 20px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .summary-item {
+            padding: 8px 0;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .summary-value {
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .highlight {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .payment-methods {
+            margin-bottom: 25px;
+        }
+
+        .payment-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border-color: #4f46e5;
+        }
+
+        .payment-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .payment-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .qr-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 2px dashed #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .qr-code {
+            max-width: 250px;
+            margin: 0 auto 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .qr-instructions {
+            margin-top: 15px;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .bank-details {
+            background: #f0f9ff;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #bae6fd;
+            margin-bottom: 20px;
+        }
+
+        .bank-details h3 {
+            color: #0369a1;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bank-info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .bank-item {
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .bank-label {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .bank-value {
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 15px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #4338ca;
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .payment-instructions {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .instructions-title {
+            color: #dc2626;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .instructions-list li {
+            padding: 6px 0;
+            color: #991b1b;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .instructions-list li i {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .contact-item i {
+            color: #4f46e5;
+            width: 20px;
+        }
+
+        .payment-actions {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .booking-id {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+            .payment-container {
+                margin: 10px;
+            }
+            
+            .payment-header {
+                padding: 20px;
+            }
+            
+            .payment-content {
+                padding: 20px;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-tabs {
+                flex-direction: column;
+            }
+            
+            .qr-code {
+                max-width: 200px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1><i class="fas fa-credit-card"></i> Complete Payment</h1>
+            <p>Secure Payment Process for INWMH Studios</p>
+        </div>
+
+        <div class="payment-content">
+            <!-- Booking Summary -->
+            <div class="booking-summary">
+                <div class="summary-title">
+                    <i class="fas fa-receipt"></i>
+                    Booking Summary
+                </div>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-label">Booking ID</div>
+                        <div class="summary-value booking-id">{{ booking['Booking ID'] }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Date</div>
+                        <div class="summary-value">{{ booking['Date'] }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Time Slot</div>
+                        <div class="summary-value">{{ booking['Time Slot'] }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Duration</div>
+                        <div class="summary-value">{{ booking['Duration'] }} hours</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Package</div>
+                        <div class="summary-value">{{ booking['Package'] }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Setup</div>
+                        <div class="summary-value">{{ booking['Setup'] }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Base Price</div>
+                        <div class="summary-value">${{ booking['Base Price'] }}</div>
+                    </div>
+                    {% if booking['Saturday Surcharge'] and booking['Saturday Surcharge'] != '0.00' %}
+                    <div class="summary-item">
+                        <div class="summary-label">Saturday Surcharge</div>
+                        <div class="summary-value">${{ booking['Saturday Surcharge'] }}</div>
+                    </div>
+                    {% endif %}
+                    <div class="summary-item">
+                        <div class="summary-label">Total Amount</div>
+                        <div class="summary-value highlight">${{ booking['Total Price'] }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods Tabs -->
+            <div class="payment-methods">
+                <div class="payment-tabs">
+                    <button class="tab-btn active" data-tab="upi">
+                        <i class="fas fa-qrcode"></i> UPI QR Code
+                    </button>
+                    <button class="tab-btn" data-tab="bank">
+                        <i class="fas fa-university"></i> Bank Transfer
+                    </button>
+                </div>
+
+                <!-- UPI QR Code Section -->
+                <div class="payment-section upi-section active" id="upiSection">
+                    <div class="qr-section">
+                        <div class="qr-code">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=your-upi-id@oksbi&pn=INWMH%20Studios&am={{ booking['Total Price'] }}&tn=Booking%20{{ booking['Booking ID'] }}" 
+                                 alt="UPI QR Code">
+                        </div>
+                        <div class="qr-instructions">
+                            <p><strong>Scan this QR code with any UPI app</strong></p>
+                            <p style="margin-top: 8px; font-size: 13px; color: #64748b;">
+                                Alternatively, you can send payment to:<br>
+                                <strong style="color: #4f46e5;">your-upi-id@oksbi</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bank Details Section -->
+                <div class="payment-section bank-section" id="bankSection">
+                    <div class="bank-details">
+                        <h3><i class="fas fa-university"></i> Bank Account Details</h3>
+                        <div class="bank-info-grid">
+                            <div class="bank-item">
+                                <div class="bank-label">Account Holder Name</div>
+                                <div class="bank-value">INWMH Studios Pvt. Ltd.</div>
+                                <button class="copy-btn" data-copy="INWMH Studios Pvt. Ltd.">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            
+                            <div class="bank-item">
+                                <div class="bank-label">Bank Name</div>
+                                <div class="bank-value">State Bank of India</div>
+                                <button class="copy-btn" data-copy="State Bank of India">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            
+                            <div class="bank-item">
+                                <div class="bank-label">Account Number</div>
+                                <div class="bank-value">123456789012</div>
+                                <button class="copy-btn" data-copy="123456789012">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            
+                            <div class="bank-item">
+                                <div class="bank-label">IFSC Code</div>
+                                <div class="bank-value">SBIN0001234</div>
+                                <button class="copy-btn" data-copy="SBIN0001234">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Payment Info -->
+            <div class="payment-instructions">
+                <div class="instructions-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Important Information
+                </div>
+                <ul class="instructions-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Complete payment via UPI QR Code or Bank Transfer</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Take a screenshot of your payment confirmation</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Click "Mark Payment as Complete" below</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span><strong>Admin will receive your payment request</strong></span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span><strong>You'll receive confirmation email after admin verification</strong></span>
+                    </li>
+                </ul>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Admin Email: sanjanastudys@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-comment-alt"></i>
+                        <span>Mention Booking ID: <strong>{{ booking['Booking ID'] }}</strong></span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-history"></i>
+                        <span>Verification Time: 1-2 hours during business hours</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Action -->
+            <div class="payment-actions">
+                <button class="btn btn-primary" id="markPaymentBtn" onclick="markPaymentComplete()">
+                    <i class="fas fa-check-circle"></i>
+                    Mark Payment as Complete
+                    <div class="loading" id="loadingSpinner"></div>
+                </button>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle" style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <h3 style="margin-bottom: 10px;">Payment Request Submitted!</h3>
+                    <p style="margin-bottom: 15px;">
+                        ✅ <strong>Admin notified of your payment request</strong><br>
+                        ✅ <strong>Verification in progress</strong><br><br>
+                        
+                        Our admin team has been notified and will verify your payment shortly.<br>
+                        You'll receive a confirmation email once verification is complete.
+                    </p>
+                    <p>
+                        <strong>Booking ID:</strong> {{ booking['Booking ID'] }}<br>
+                        <strong>Email:</strong> {{ booking['Email'] }}
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <a href="/" style="color: #4f46e5; text-decoration: none; font-weight: 600;">
+                            <i class="fas fa-home"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <p>
+                    <i class="fas fa-lock"></i> Your payment information is secure.<br>
+                    For any issues, contact us at sanjanastudys@gmail.com
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bookingId = "{{ booking['Booking ID'] }}";
+        let paymentMarked = false;
+
+        // Tab switching functionality
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                
+                // Update active tab button
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Show corresponding section
+                document.querySelectorAll('.payment-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(tab + 'Section').classList.add('active');
+            });
+        });
+
+        // Copy to clipboard functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const text = this.dataset.copy;
+                const originalText = this.innerHTML;
+                
+                try {
+                    await navigator.clipboard.writeText(text);
+                    
+                    // Visual feedback
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    this.classList.add('copied');
+                    
+                    // Reset after 2 seconds
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('copied');
+                    }, 2000);
+                    
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy text to clipboard');
+                }
+            });
+        });
+
+        function markPaymentComplete() {
+            if (paymentMarked) return;
+            
+            const btn = document.getElementById('markPaymentBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Disable button and show loading
+            btn.disabled = true;
+            spinner.style.display = 'block';
+            btn.innerHTML = '<div class="loading"></div> Submitting...';
+            
+            // Send payment completion request
+            fetch(`/payment_completed/${bookingId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                spinner.style.display = 'none';
+                
+                if (data.message) {
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    btn.style.display = 'none';
+                    paymentMarked = true;
+                    
+                    // Show notification
+                    showNotification('Payment request sent to admin! Confirmation email coming soon.', 'success');
+                } else {
+                    showNotification('Error submitting payment. Please try again.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Payment as Complete';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                spinner.style.display = 'none';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Payment as Complete';
+                showNotification('Network error. Please check your connection.', 'error');
+            });
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            notification.style.background = type === 'success' ? '#10b981' : '#ef4444';
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
