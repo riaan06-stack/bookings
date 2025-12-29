@@ -211,6 +211,36 @@
             box-shadow: 0 6px 16px rgba(59, 130, 246, .4);
         }
 
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .submit-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .submit-btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-top: -10px;
+            margin-left: -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -804,6 +834,123 @@
             opacity: 0.7;
         }
 
+        /* Package card additional styles */
+        .package-subtitle {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            min-height: 40px;
+        }
+
+        .package-card .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin: 12px 0;
+        }
+
+        .package-card .old-price {
+            text-decoration: line-through;
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+
+        .package-card .save {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .package-card .features {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+            flex-grow: 1;
+        }
+
+        .package-card .features li {
+            padding: 4px 0;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .package-card .features li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* People selector additional styles */
+        .selected-display {
+            text-align: center;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .selected-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .selected-text {
+            font-size: 1rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* Calendar button fixes */
+        .cal-btn {
+            padding: 10px 14px !important;
+            border-radius: 10px !important;
+            border: 2px solid rgba(59, 130, 246, 0.3) !important;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.8)) !important;
+            cursor: pointer !important;
+            font-weight: 700 !important;
+            color: #60a5fa !important;
+            min-width: 44px !important;
+            transition: all 0.25s !important;
+        }
+
+        .cal-btn:hover {
+            border-color: #3b82f6 !important;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2)) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Review section fixes */
+        #reviewDetails {
+            background: rgba(15, 23, 42, 0.6) !important;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        #reviewDetails h3 {
+            margin-bottom: 15px;
+            color: #f1f5f9 !important;
+        }
+
+        #reviewContent div {
+            color: #e2e8f0;
+        }
+
+        #reviewContent div strong {
+            color: #cbd5e1;
+        }
+
         @media (max-width:1024px) {
             .package-grid {
                 grid-template-columns: repeat(2, 1fr)
@@ -882,26 +1029,26 @@
 
                     <div class="setup-options">
                         <label class="setup-card">
-                            <input type="radio" name="setup" value="The Nexus Setup">
-                            <img src="/static/nexus.jpg" alt="Nexus Setup">
+                            <input type="radio" name="setup" value="The Nexus Setup" required>
+                            <img src="https://via.placeholder.com/150x100/3b82f6/ffffff?text=Nexus+Setup" alt="Nexus Setup">
                             <span>The Nexus Setup</span>
                         </label>
 
                         <label class="setup-card">
-                            <input type="radio" name="setup" value="The Duality Setup">
-                            <img src="/static/duality.jpg" alt="Duality Setup">
+                            <input type="radio" name="setup" value="The Duality Setup" required>
+                            <img src="https://via.placeholder.com/150x100/8b5cf6/ffffff?text=Duality+Setup" alt="Duality Setup">
                             <span>The Duality Setup</span>
                         </label>
 
                         <label class="setup-card">
-                            <input type="radio" name="setup" value="The Sync Setup">
-                            <img src="/static/sync.jpg" alt="Sync Setup">
+                            <input type="radio" name="setup" value="The Sync Setup" required>
+                            <img src="https://via.placeholder.com/150x100/10b981/ffffff?text=Sync+Setup" alt="Sync Setup">
                             <span>The Sync Setup</span>
                         </label>
 
                         <label class="setup-card">
-                            <input type="radio" name="setup" value="The Halo Setup">
-                            <img src="/static/halo.jpg" alt="Halo Setup">
+                            <input type="radio" name="setup" value="The Halo Setup" required>
+                            <img src="https://via.placeholder.com/150x100/ec4899/ffffff?text=Halo+Setup" alt="Halo Setup">
                             <span>The Halo Setup</span>
                         </label>
                     </div>
@@ -938,7 +1085,7 @@
 
                     <div class="package-grid">
                         <label class="package-card">
-                            <input type="radio" name="package" value="Recording + Live Mix" data-price="156">
+                            <input type="radio" name="package" value="Recording + Live Mix" data-price="156" required>
                             <h3>Recording + Live Mix</h3>
                             <p class="package-subtitle">Ideal for immediate publishing in horizontal format.</p>
                             <div class="price">$156.00 <span style="font-size:.8rem;color:#64748b">/ per hour</span>
@@ -951,7 +1098,7 @@
 
                         <label class="package-card">
                             <div class="badge best">⚡ Best Buy</div>
-                            <input type="radio" name="package" value="Recording + Professional Edit" data-price="276">
+                            <input type="radio" name="package" value="Recording + Professional Edit" data-price="276" required>
                             <h3>Recording + Professional Edit</h3>
                             <p class="package-subtitle">Perfect for a polished and professional finish.</p>
                             <div class="old-price">$312.00</div>
@@ -964,7 +1111,7 @@
                         </label>
 
                         <label class="package-card">
-                            <input type="radio" name="package" value="Recording" data-price="120">
+                            <input type="radio" name="package" value="Recording" data-price="120" required>
                             <h3>Recording</h3>
                             <p class="package-subtitle">For raw footage you can edit later.</p>
                             <div class="price">$120.00 <span style="font-size:.8rem;color:#64748b">/ per hour</span>
@@ -975,7 +1122,7 @@
                         </label>
 
                         <label class="package-card">
-                            <input type="radio" name="package" value="Live Stream" data-price="138">
+                            <input type="radio" name="package" value="Live Stream" data-price="138" required>
                             <h3>Live Stream</h3>
                             <p class="package-subtitle">Perfect for seamless and professional live streaming.</p>
                             <div class="price">$138.00 <span style="font-size:.8rem;color:#64748b">/ per hour</span>
@@ -986,7 +1133,7 @@
                         </label>
 
                         <label class="package-card">
-                            <input type="radio" name="package" value="Audio Only Recording" data-price="108">
+                            <input type="radio" name="package" value="Audio Only Recording" data-price="108" required>
                             <h3>Audio Only Recording</h3>
                             <p class="package-subtitle">Great for audio-only podcast production.</p>
                             <div class="price">$108.00 <span style="font-size:.8rem;color:#64748b">/ per hour</span>
@@ -998,7 +1145,7 @@
 
                         <label class="package-card">
                             <div class="badge exclusive">🔥 Exclusive</div>
-                            <input type="radio" name="package" value="Exclusive Event Space" data-price="360">
+                            <input type="radio" name="package" value="Exclusive Event Space" data-price="360" required>
                             <h3>Exclusive Event Space</h3>
                             <p class="package-subtitle">Live audience podcasting, workshops & more.</p>
                             <div class="old-price">$480.00</div>
@@ -1024,13 +1171,11 @@
                     <div class="calendar-container">
                         <div class="calendar-header"
                             style="display:flex;align-items:center;gap:12px;margin-bottom:12px;border-bottom:2px solid #e2e8f0;padding-bottom:10px">
-                            <button id="prevMonth" class="cal-btn"
-                                style="padding:10px 14px;border-radius:10px;border:2px solid #e2e8f0;background:linear-gradient(135deg,#f8fafc,#f1f5f9);cursor:pointer;font-weight:700;color:#3b82f6;min-width:44px">&lt;</button>
+                            <button id="prevMonth" class="cal-btn">&lt;</button>
                             <div id="calendarMonth"
-                                style="flex:1;text-align:center;font-size:1.2rem;font-weight:700;color:#1e293b">Month
+                                style="flex:1;text-align:center;font-size:1.2rem;font-weight:700;color:#f1f5f9">Month
                             </div>
-                            <button id="nextMonth" class="cal-btn"
-                                style="padding:10px 14px;border-radius:10px;border:2px solid #e2e8f0;background:linear-gradient(135deg,#f8fafc,#f1f5f9);cursor:pointer;font-weight:700;color:#3b82f6;min-width:44px">&gt;</button>
+                            <button id="nextMonth" class="cal-btn">&gt;</button>
                         </div>
 
                         <div class="calendar-grid">
@@ -1106,9 +1251,8 @@
                 <div class="form-section">
                     <h2>Review & Submit</h2>
 
-                    <div id="reviewDetails"
-                        style="background:#f8f7fa;padding:20px;border-radius:12px;margin-bottom:20px">
-                        <h3 style="margin-bottom:15px;color:#331e38">Booking Summary</h3>
+                    <div id="reviewDetails">
+                        <h3>Booking Summary</h3>
                         <div id="reviewContent"></div>
                     </div>
 
@@ -1127,12 +1271,11 @@
                         <div style="flex:1"></div>
                     </div>
 
-                    <button type="submit" class="submit-btn">Submit Booking</button>
+                    <button type="submit" class="submit-btn" id="submitBookingBtn">Submit Booking</button>
+                    <div class="success-message" id="successMessage">✅ Booking submitted successfully! Redirecting to payment...</div>
+                    <div class="error-message" id="errorMessage">❌ Error submitting booking. Try again.</div>
                 </div>
             </form>
-
-            <div class="success-message" id="successMessage">✅ Booking submitted successfully!</div>
-            <div class="error-message" id="errorMessage">❌ Error submitting booking. Try again.</div>
         </div>
     </div>
 
@@ -1625,7 +1768,7 @@
             
             // Check if it's Saturday
             const dateObj = new Date(date);
-            const isSaturdayBooking = dateObj.getDay() === 6; // 6 = Saturday
+            const isSaturdayBooking = date && date !== 'Not selected' ? new Date(date).getDay() === 6 : false;
             const dayType = isSaturdayBooking ? 'Saturday (+20% surcharge)' : 
                            dateObj.getDay() === 0 ? 'Sunday (Closed)' : 'Weekday';
 
@@ -1653,6 +1796,7 @@
            Submit validation + send
         ------------------------*/
         const form = document.getElementById("reservationForm");
+        const submitBtn = document.getElementById("submitBookingBtn");
         const successMessage = document.getElementById("successMessage");
         const errorMessage = document.getElementById("errorMessage");
 
@@ -1703,74 +1847,85 @@
             return true;
         }
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  const submitBtn = form.querySelector(".submit-btn");
-  if (submitBtn.disabled) return; // extra safety
-  submitBtn.disabled = true;
+            // Prevent double submission
+            if (submitBtn.disabled) return;
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            
+            successMessage.style.display = "none";
+            errorMessage.style.display = "none";
 
-  successMessage.style.display = "none";
-  errorMessage.style.display = "none";
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
 
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
+            if (!validateBeforeSubmit(data)) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                return;
+            }
 
-  if (!validateBeforeSubmit(data)) {
-    submitBtn.disabled = false;
-    return;
-  }
+            const duration = parseInt(data.duration) || 2;
+            const timeSlot = data.time_slot;
 
-  const duration = parseInt(data.duration) || 2;
-  const timeSlot = data.time_slot;
+            const bookingInfo = {
+                ...data,
+                duration,
+                bookedSlots: getTimeSlotsForDuration(timeSlot, duration),
+                base_price: data.base_price || "0.00",
+                saturday_surcharge: data.saturday_surcharge || "0.00",
+                total_price: data.total_price || "0.00",
+                is_saturday: isSaturday
+            };
 
-  const bookingInfo = {
-    ...data,
-    duration,
-    bookedSlots: getTimeSlotsForDuration(timeSlot, duration),
-    base_price: data.base_price || "0.00",
-    saturday_surcharge: data.saturday_surcharge || "0.00",
-    total_price: data.total_price || "0.00",
-    is_saturday: isSaturday
-  };
+            try {
+                const res = await fetch("/submit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(bookingInfo)
+                });
 
-  try {
-    const res = await fetch("/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bookingInfo)
-    });
-
-    if (res.ok) {
-      successMessage.style.display = "block";
-      showPopup();
-
-      // Reset form safely
-      form.reset();
-      current = 0;
-      showSection(0);
-
-      // ❌ DO NOT re-enable submit here
-      return;
-    } 
-    else if (res.status === 409) {
-      const errorData = await res.json();
-      alert(errorData.message || "Selected slots overlap with an existing booking.");
-      errorMessage.style.display = "block";
-    } 
-    else {
-      errorMessage.style.display = "block";
-    }
-  } catch (err) {
-    console.error(err);
-    errorMessage.style.display = "block";
-  } finally {
-    // Re-enable ONLY if not successful
-    if (!successMessage.style.display || successMessage.style.display === "none") {
-      submitBtn.disabled = false;
-    }
-  }
-});
+                if (res.ok) {
+                    const result = await res.json();
+                    successMessage.style.display = "block";
+                    successMessage.textContent = "✅ Booking submitted successfully! Redirecting to payment...";
+                    
+                    // IMPORTANT: Redirect to payment page with booking ID
+                    if (result.booking_id) {
+                        setTimeout(() => {
+                            window.location.href = `/payment/${result.booking_id}`;
+                        }, 1500);
+                    } else {
+                        showPopup();
+                    }
+                    
+                    // Don't reset form here - let payment page handle it
+                    return;
+                } 
+                else if (res.status === 409) {
+                    const errorData = await res.json();
+                    alert(errorData.message || "Selected slots overlap with an existing booking.");
+                    errorMessage.style.display = "block";
+                } 
+                else {
+                    const errorData = await res.json();
+                    alert(errorData.message || "Error submitting booking. Please try again.");
+                    errorMessage.style.display = "block";
+                }
+            } catch (err) {
+                console.error("Submission error:", err);
+                alert("Network error. Please check your connection and try again.");
+                errorMessage.style.display = "block";
+            } finally {
+                // Only re-enable if not successful (no redirect happened)
+                if (!successMessage.style.display || successMessage.style.display === "none") {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }
+            }
+        });
 
         /* -----------------------
            Popup
@@ -1783,5 +1938,4 @@ form.addEventListener("submit", async (e) => {
         }
     </script>
 </body>
-
 </html>
