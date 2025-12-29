@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | INWMH Studios</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -12,110 +12,359 @@
             padding: 0;
         }
 
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --dark-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.9);
+            --card-border: rgba(124, 58, 237, 0.3);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --hover-bg: rgba(124, 58, 237, 0.1);
+        }
+
         body {
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            background: var(--dark-bg);
             min-height: 100vh;
             padding: 20px;
-            color: #e2e8f0;
+            color: var(--text-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 20%);
         }
 
         .header {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 0 10px;
         }
 
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #ec4899 100%);
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.5px;
         }
 
-        .stats-container {
-            max-width: 1400px;
-            margin: 0 auto 25px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .header-actions {
+            display: flex;
             gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Stats Container */
+        .stats-container {
+            max-width: 1600px;
+            margin: 0 auto 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
             padding: 0 10px;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 14px;
-            border: 1px solid rgba(96, 165, 250, 0.2);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
         }
 
         .stat-card h3 {
             font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 8px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .stat-card .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1;
         }
 
-        .table-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
+        .stat-card .stat-trend {
+            font-size: 0.85rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-card .stat-trend.positive {
+            color: var(--success);
+        }
+
+        .stat-card .stat-trend.negative {
+            color: var(--danger);
+        }
+
+        /* Filters Section */
+        .filters-container {
+            max-width: 1600px;
+            margin: 0 auto 25px;
+            padding: 0 10px;
+        }
+
+        .filters-card {
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
+            padding: 20px;
             border-radius: 18px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .filters-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .filter-select {
+            padding: 12px 15px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.2);
+        }
+
+        .filter-select option {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+        }
+
+        /* Table Container */
+        .table-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(96, 165, 250, 0.2);
+            border: 1px solid var(--card-border);
+        }
+
+        .table-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
         }
 
         .table-wrapper {
             overflow-x: auto;
-            max-height: calc(100vh - 280px);
+            max-height: calc(100vh - 350px);
             overflow-y: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 14px 16px;
-            text-align: left;
-            font-size: 0.9rem;
-            border-bottom: 1px solid rgba(100, 116, 139, 0.3);
+            min-width: 1000px;
         }
 
         th {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: #fff;
-            font-weight: 600;
+            padding: 18px 20px;
+            text-align: left;
+            font-size: 0.8rem;
+            background: rgba(30, 41, 59, 0.95);
+            color: var(--text-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(124, 58, 237, 0.3);
             position: sticky;
             top: 0;
             z-index: 10;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
             white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        th:hover {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        th.sortable {
+            position: relative;
+            padding-right: 25px;
+        }
+
+        th.sortable::after {
+            content: '↕';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        th.sort-asc::after {
+            content: '↑';
+            color: var(--success);
+        }
+
+        th.sort-desc::after {
+            content: '↓';
+            color: var(--danger);
         }
 
         td {
-            color: #cbd5e1;
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+            transition: background 0.2s ease;
         }
 
         tbody tr {
@@ -123,40 +372,117 @@
         }
 
         tbody tr:hover {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--hover-bg);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: var(--hover-bg);
+        }
+
+        /* Column-specific styling */
+        td[data-column="booking-id"],
+        td[data-column="booking id"] {
+            font-weight: 600;
+            color: #764ba2;
+        }
+
+        td[data-column="date"] {
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        td[data-column="price"],
+        td[data-column="base price"] {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        td[data-column="email"] {
+            color: var(--info);
+        }
+
+        td[data-column="duration"] {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        td[data-column="company"] {
+            font-weight: 600;
         }
 
         .empty-state {
-            padding: 60px 20px;
+            padding: 80px 20px;
             text-align: center;
-            color: #94a3b8;
+            color: var(--text-secondary);
             font-size: 1.1rem;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .logout-btn {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-            display: inline-block;
         }
 
         .logout-btn:hover {
             background: linear-gradient(135deg, #dc2626, #b91c1c);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .export-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .export-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 10px 15px;
         }
 
         .loading {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             font-size: 1.1rem;
-            color: #94a3b8;
+            color: var(--text-secondary);
         }
 
         .loading::after {
@@ -172,106 +498,354 @@
 
         /* Status badges */
         .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .status-pending {
-            background: rgba(251, 191, 36, 0.2);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.3);
+        .status-pending_payment {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .status-payment_submitted {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
         .status-confirmed {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .status-cancelled {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.15);
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
+        /* Action buttons */
+        .action-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .delete-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .confirm-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .confirm-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .view-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            max-width: 350px;
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9));
+            color: white;
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9));
+            color: white;
+            border-left: 4px solid var(--danger);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
         /* Scrollbar styling */
         .table-wrapper::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
         }
 
         .table-wrapper::-webkit-scrollbar-track {
             background: rgba(15, 23, 42, 0.5);
+            border-radius: 10px;
         }
 
         .table-wrapper::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-radius: 5px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            border: 3px solid var(--card-bg);
         }
 
         .table-wrapper::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
         }
 
         /* Responsive design */
+        @media (max-width: 1200px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
-            .header {
+            body {
+                padding: 15px;
+            }
+            
+            .header-content {
                 flex-direction: column;
-                gap: 15px;
                 text-align: center;
             }
-
-            h2 {
-                font-size: 1.5rem;
+            
+            .logo-container {
+                justify-content: center;
             }
-
+            
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .header-actions .btn {
+                width: 100%;
+            }
+            
             .stats-container {
                 grid-template-columns: 1fr;
             }
-
+            
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+            
             th, td {
-                padding: 10px 12px;
-                font-size: 0.85rem;
+                padding: 12px 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Notification container -->
+<div id="notification" class="notification"></div>
+
 <div class="header">
-    <h2>📊 Booking Dashboard</h2>
-    <a href="/logout" class="logout-btn">Logout</a>
+    <div class="header-content">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-video"></i>
+            </div>
+            <div>
+                <h1>INWMH Studios Dashboard</h1>
+                <div class="subtitle">Comprehensive booking management system</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="exportBtn" class="btn export-btn">
+                <i class="fas fa-file-excel"></i> Export to Excel
+            </button>
+            <a href="/logout" class="btn logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
 </div>
 
 <div class="stats-container">
     <div class="stat-card">
-        <h3>Total Bookings</h3>
+        <h3><i class="fas fa-calendar-alt"></i> Total Bookings</h3>
         <div class="stat-value" id="totalBookings">0</div>
+        <div class="stat-trend positive">
+            <i class="fas fa-arrow-up"></i> 12% from last month
+        </div>
     </div>
     <div class="stat-card">
-        <h3>This Month</h3>
-        <div class="stat-value" id="monthBookings">0</div>
+        <h3><i class="fas fa-calendar-week"></i> This Week</h3>
+        <div class="stat-value" id="weekBookings">0</div>
+        <div class="stat-trend positive">
+            <i class="fas fa-arrow-up"></i> 8% from last week
+        </div>
     </div>
     <div class="stat-card">
-        <h3>Today</h3>
+        <h3><i class="fas fa-sun"></i> Today</h3>
         <div class="stat-value" id="todayBookings">0</div>
+        <div class="stat-trend negative">
+            <i class="fas fa-arrow-down"></i> 3% from yesterday
+        </div>
     </div>
     <div class="stat-card">
-        <h3>Upcoming</h3>
+        <h3><i class="fas fa-calendar-check"></i> Upcoming</h3>
         <div class="stat-value" id="upcomingBookings">0</div>
+        <div class="stat-trend positive">
+            <i class="fas fa-arrow-up"></i> 15% from last week
+        </div>
+    </div>
+    <div class="stat-card">
+        <h3><i class="fas fa-clock"></i> Pending Verification</h3>
+        <div class="stat-value" id="pendingBookings">0</div>
+        <div class="stat-trend negative">
+            <i class="fas fa-arrow-down"></i> 5% from yesterday
+        </div>
+    </div>
+</div>
+
+<!-- Filters Section - Simplified -->
+<div class="filters-container">
+    <div class="filters-card">
+        <div class="filters-title">
+            <i class="fas fa-filter"></i> Filter & Sort Bookings
+        </div>
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label class="filter-label">Sort By</label>
+                <select id="sortFilter" class="filter-select">
+                    <option value="date_desc">Date (Newest First)</option>
+                    <option value="date_asc">Date (Oldest First)</option>
+                    <option value="price_desc">Price (High to Low)</option>
+                    <option value="price_asc">Price (Low to High)</option>
+                    <option value="company_asc">Company (A to Z)</option>
+                    <option value="company_desc">Company (Z to A)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Entries Per Page</label>
+                <select id="limitFilter" class="filter-select">
+                    <option value="10">10 entries</option>
+                    <option value="25" selected>25 entries</option>
+                    <option value="50">50 entries</option>
+                    <option value="100">100 entries</option>
+                    <option value="all">All entries</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Status Filter</label>
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="table-container">
+    <div class="table-header">
+        <div class="table-title">
+            <i class="fas fa-list-ul"></i> Bookings Overview
+        </div>
+        <div class="table-controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search bookings...">
+            </div>
+            <button id="refreshBtn" class="btn refresh-btn">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+    </div>
+    
     <div class="table-wrapper">
-        <div class="loading" id="loading">Loading bookings</div>
+        <div class="loading" id="loading">Loading bookings data...</div>
         <table id="bookingsTable" style="display: none;">
             <thead>
-                <tr id="table-head"></tr>
+                <tr id="table-head">
+                    <!-- Columns will be dynamically added here -->
+                </tr>
             </thead>
             <tbody id="table-body"></tbody>
         </table>
@@ -279,7 +853,23 @@
 </div>
 
 <script>
-(async function () {
+// Global variables
+let allBookings = [];
+let filteredBookings = [];
+let currentSort = { column: 'date', direction: 'desc' };
+
+// Define the exact columns you want to display (in your specified order)
+const tableColumns = [
+    'Addons',
+    'Base price',
+    'Booking id',
+    'Company',
+    'Date',
+    'Duration',
+    'Email'
+];
+
+(async function loadDashboard() {
     try {
         const res = await fetch("/api/bookings");
         const json = await res.json();
@@ -288,88 +878,556 @@
         const table = document.getElementById("bookingsTable");
 
         if (json.status !== "success") {
-            loading.innerHTML = "❌ Failed to load bookings";
+            loading.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>Failed to load bookings data</div>
+                </div>
+            `;
             return;
         }
 
-        const data = json.bookings;
-
-        if (!data || data.length === 0) {
-            loading.innerHTML = "<div class='empty-state'>📭 No bookings found</div>";
+        allBookings = json.bookings;
+        
+        if (!allBookings || allBookings.length === 0) {
+            loading.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <div>No bookings found</div>
+                </div>
+            `;
             return;
         }
 
-        // Calculate statistics
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        
-        const todayCount = data.filter(b => {
-            const bookingDate = new Date(b.date);
-            bookingDate.setHours(0, 0, 0, 0);
-            return bookingDate.getTime() === today.getTime();
-        }).length;
-        
-        const monthCount = data.filter(b => {
-            const bookingDate = new Date(b.date);
-            return bookingDate >= thisMonth;
-        }).length;
-        
-        const upcomingCount = data.filter(b => {
-            const bookingDate = new Date(b.date);
-            return bookingDate >= today;
-        }).length;
-
-        document.getElementById("totalBookings").textContent = data.length;
-        document.getElementById("monthBookings").textContent = monthCount;
-        document.getElementById("todayBookings").textContent = todayCount;
-        document.getElementById("upcomingBookings").textContent = upcomingCount;
-
-        // Build table
-        const headers = Object.keys(data[0]);
-        const headRow = document.getElementById("table-head");
-        const body = document.getElementById("table-body");
-
-        // Headers
-        headers.forEach(h => {
-            const th = document.createElement("th");
-            th.textContent = h.replace(/_/g, ' ');
-            headRow.appendChild(th);
-        });
-
-        // Rows
-        data.forEach(row => {
-            const tr = document.createElement("tr");
-            headers.forEach(h => {
-                const td = document.createElement("td");
-                const value = row[h] ?? "";
-                
-                // Add status badge if it's a status column
-                if (h.toLowerCase() === 'status') {
-                    const badge = document.createElement('span');
-                    badge.className = `status-badge status-${value.toLowerCase()}`;
-                    badge.textContent = value;
-                    td.appendChild(badge);
-                } else {
-                    td.textContent = value;
-                }
-                
-                tr.appendChild(td);
-            });
-            body.appendChild(tr);
-        });
-
-        // Show table, hide loading
-        loading.style.display = "none";
-        table.style.display = "table";
+        updateStatistics();
+        applyFilters();
 
     } catch (err) {
         console.error("Admin dashboard error:", err);
-        document.getElementById("loading").innerHTML = 
-            "<div class='empty-state'>❌ Error loading dashboard data</div>";
+        document.getElementById("loading").innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <div>Error loading dashboard data</div>
+                <div style="font-size: 0.9rem; margin-top: 10px;">${err.message}</div>
+            </div>
+        `;
     }
 })();
+
+function updateStatistics() {
+    if (allBookings.length === 0) return;
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const thisWeek = getWeekStartDate(today);
+    const weekEnd = new Date(thisWeek);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 999);
+    
+    const todayCount = allBookings.filter(b => {
+        const bookingDate = new Date(b.date);
+        bookingDate.setHours(0, 0, 0, 0);
+        return bookingDate.getTime() === today.getTime();
+    }).length;
+    
+    const weekCount = allBookings.filter(b => {
+        const bookingDate = new Date(b.date);
+        return bookingDate >= thisWeek && bookingDate <= weekEnd;
+    }).length;
+    
+    const upcomingCount = allBookings.filter(b => {
+        const bookingDate = new Date(b.date);
+        return bookingDate >= today;
+    }).length;
+    
+    const pendingCount = allBookings.filter(b => {
+        return b.payment_status === "PAYMENT_SUBMITTED" || 
+               (b.status && b.status.toLowerCase().includes('pending'));
+    }).length;
+
+    // Update statistics display
+    document.getElementById("totalBookings").textContent = allBookings.length;
+    document.getElementById("weekBookings").textContent = weekCount;
+    document.getElementById("todayBookings").textContent = todayCount;
+    document.getElementById("upcomingBookings").textContent = upcomingCount;
+    document.getElementById("pendingBookings").textContent = pendingCount;
+}
+
+function applyFilters() {
+    let filtered = [...allBookings];
+    
+    // Apply status filter
+    const statusFilter = document.getElementById('statusFilter').value;
+    if (statusFilter !== 'all') {
+        filtered = filtered.filter(booking => {
+            const status = booking.payment_status || booking.status || '';
+            return status.toLowerCase().includes(statusFilter);
+        });
+    }
+    
+    // Apply search filter
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    if (searchTerm) {
+        filtered = filtered.filter(booking => {
+            return Object.values(booking).some(value => 
+                String(value).toLowerCase().includes(searchTerm)
+            );
+        });
+    }
+    
+    // Apply sorting
+    filtered = applySorting(filtered);
+    
+    // Apply pagination limit
+    const limitFilter = document.getElementById('limitFilter').value;
+    if (limitFilter !== 'all') {
+        filtered = filtered.slice(0, parseInt(limitFilter));
+    }
+    
+    filteredBookings = filtered;
+    renderTable();
+}
+
+function applySorting(data) {
+    const sortFilter = document.getElementById('sortFilter').value;
+    
+    let column, direction;
+    switch(sortFilter) {
+        case 'date_desc':
+            column = 'date';
+            direction = 'desc';
+            break;
+        case 'date_asc':
+            column = 'date';
+            direction = 'asc';
+            break;
+        case 'price_desc':
+            column = 'Base price';
+            direction = 'desc';
+            break;
+        case 'price_asc':
+            column = 'Base price';
+            direction = 'asc';
+            break;
+        case 'company_desc':
+            column = 'Company';
+            direction = 'desc';
+            break;
+        case 'company_asc':
+        default:
+            column = 'Company';
+            direction = 'asc';
+    }
+    
+    currentSort = { column, direction };
+    
+    return data.sort((a, b) => {
+        let aVal = a[column] || '';
+        let bVal = b[column] || '';
+        
+        // Handle dates
+        if (column === 'date') {
+            aVal = new Date(aVal).getTime();
+            bVal = new Date(bVal).getTime();
+        }
+        
+        // Handle prices
+        if (column === 'Base price') {
+            aVal = parseFloat(aVal) || 0;
+            bVal = parseFloat(bVal) || 0;
+        }
+        
+        // Handle strings
+        if (typeof aVal === 'string') {
+            aVal = aVal.toLowerCase();
+            bVal = bVal.toLowerCase();
+        }
+        
+        if (direction === 'asc') {
+            return aVal > bVal ? 1 : -1;
+        } else {
+            return aVal < bVal ? 1 : -1;
+        }
+    });
+}
+
+function renderTable() {
+    const loading = document.getElementById("loading");
+    const table = document.getElementById("bookingsTable");
+    const headRow = document.getElementById("table-head");
+    const body = document.getElementById("table-body");
+    
+    if (filteredBookings.length === 0) {
+        loading.style.display = "block";
+        table.style.display = "none";
+        loading.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-search"></i>
+                <div>No bookings match your filters</div>
+                <button onclick="resetFilters()" style="margin-top: 15px; padding: 8px 16px; background: var(--primary-gradient); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    Reset Filters
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    // Clear existing content
+    headRow.innerHTML = '';
+    body.innerHTML = '';
+    
+    // Add headers from the predefined columns
+    tableColumns.forEach(column => {
+        const th = document.createElement("th");
+        th.className = "sortable";
+        
+        // Format header text
+        let headerText = column.replace(/_/g, ' ');
+        headerText = headerText.charAt(0).toUpperCase() + headerText.slice(1).toLowerCase();
+        th.textContent = headerText;
+        th.dataset.column = column.toLowerCase().replace(/\s+/g, '_');
+        
+        // Add sorting indicator if this column is sorted
+        if (currentSort.column.toLowerCase().replace(/\s+/g, '_') === column.toLowerCase().replace(/\s+/g, '_')) {
+            th.classList.add(`sort-${currentSort.direction}`);
+        }
+        
+        th.addEventListener('click', () => sortByColumn(column));
+        headRow.appendChild(th);
+    });
+    
+    // Add Actions header
+    const actionsTh = document.createElement("th");
+    actionsTh.textContent = "Actions";
+    headRow.appendChild(actionsTh);
+    
+    // Add rows
+    filteredBookings.forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
+        
+        tableColumns.forEach(column => {
+            const td = document.createElement("td");
+            const columnKey = column.toLowerCase().replace(/\s+/g, '_');
+            td.dataset.column = columnKey;
+            const value = row[column] || "";
+            
+            // Special formatting for different column types
+            if (column.toLowerCase() === 'date') {
+                if (value) {
+                    const date = new Date(value);
+                    if (!isNaN(date.getTime())) {
+                        td.textContent = date.toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } else {
+                        td.textContent = value;
+                    }
+                } else {
+                    td.textContent = "-";
+                }
+            } 
+            else if (column.toLowerCase().includes('base price') || column.toLowerCase().includes('price')) {
+                if (value && !isNaN(parseFloat(value))) {
+                    td.innerHTML = `<i class="fas fa-dollar-sign" style="opacity: 0.7;"></i> ${parseFloat(value).toFixed(2)}`;
+                } else {
+                    td.textContent = value || "-";
+                }
+            }
+            else if (column.toLowerCase() === 'email') {
+                td.innerHTML = `<a href="mailto:${value}" style="color: inherit; text-decoration: none;"><i class="fas fa-envelope" style="margin-right: 5px;"></i>${value}</a>`;
+            }
+            else if (column.toLowerCase() === 'duration') {
+                if (value) {
+                    td.innerHTML = `<i class="fas fa-clock" style="margin-right: 5px; opacity: 0.7;"></i>${value}`;
+                } else {
+                    td.textContent = value || "-";
+                }
+            }
+            else if (column.toLowerCase() === 'addons') {
+                if (value && value.trim() !== '') {
+                    td.innerHTML = `<span style="display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-plus-circle"></i> ${value}</span>`;
+                } else {
+                    td.textContent = "None";
+                }
+            }
+            else if (column.toLowerCase() === 'booking id') {
+                td.innerHTML = `<span style="font-family: monospace; font-weight: bold;">${value}</span>`;
+            }
+            else {
+                td.textContent = value || "-";
+            }
+            
+            tr.appendChild(td);
+        });
+        
+        // Add Actions cell with ONLY Confirm and Delete buttons
+        const actionsTd = document.createElement("td");
+        actionsTd.className = "action-buttons";
+        
+        // CONFIRM Button - For all bookings (not just pending)
+        const confirmBtn = document.createElement("button");
+        confirmBtn.className = "action-btn confirm-btn";
+        confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm';
+        confirmBtn.title = "Confirm this booking";
+        confirmBtn.dataset.bookingId = row["Booking id"];
+        confirmBtn.dataset.bookingEmail = row["Email"];
+        
+        // Check booking status - disable if already confirmed
+        const bookingStatus = row.payment_status || row.status || '';
+        if (bookingStatus.toLowerCase().includes('confirmed')) {
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirmed';
+            confirmBtn.style.opacity = "0.7";
+        }
+        
+        confirmBtn.addEventListener("click", async function() {
+            await confirmBooking(row["Booking id"], row["Email"], confirmBtn);
+        });
+        
+        // DELETE Button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "action-btn delete-btn";
+        deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+        deleteBtn.dataset.bookingId = row["Booking id"];
+        deleteBtn.addEventListener("click", async function() {
+            await deleteBooking(row["Booking id"], rowIndex);
+        });
+        
+        // Add both buttons
+        actionsTd.appendChild(confirmBtn);
+        actionsTd.appendChild(deleteBtn);
+        tr.appendChild(actionsTd);
+        body.appendChild(tr);
+    });
+    
+    // Show table, hide loading
+    loading.style.display = "none";
+    table.style.display = "table";
+}
+
+// Utility function for week calculations (kept for statistics)
+function getWeekStartDate(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+}
+
+// Sorting function
+function sortByColumn(column) {
+    const columnKey = column.toLowerCase().replace(/\s+/g, '_');
+    
+    // Toggle direction if same column, otherwise default to desc
+    if (currentSort.column === columnKey) {
+        currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort.column = columnKey;
+        currentSort.direction = 'desc';
+    }
+    
+    // Update sort filter dropdown
+    let sortValue = '';
+    if (columnKey === 'date') {
+        sortValue = currentSort.direction === 'desc' ? 'date_desc' : 'date_asc';
+    } else if (columnKey.includes('price')) {
+        sortValue = currentSort.direction === 'desc' ? 'price_desc' : 'price_asc';
+    } else if (columnKey.includes('company')) {
+        sortValue = currentSort.direction === 'desc' ? 'company_desc' : 'company_asc';
+    }
+    
+    if (sortValue) {
+        document.getElementById('sortFilter').value = sortValue;
+    }
+    
+    applyFilters();
+}
+
+// Reset filters function
+function resetFilters() {
+    document.getElementById('sortFilter').value = 'date_desc';
+    document.getElementById('limitFilter').value = '25';
+    document.getElementById('statusFilter').value = 'all';
+    document.getElementById('searchInput').value = '';
+    applyFilters();
+}
+
+// Confirm booking function
+async function confirmBooking(bookingId, email, buttonElement) {
+    if (!confirm(`Confirm booking ${bookingId} and send confirmation email to ${email}?`)) {
+        return;
+    }
+    
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming...';
+    
+    try {
+        const response = await fetch(`/api/bookings/${bookingId}/confirm`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            showNotification("✅ Booking confirmed! Confirmation email sent to user.", "success");
+            
+            // Update booking status in allBookings array
+            const bookingIndex = allBookings.findIndex(b => b["Booking id"] === bookingId);
+            if (bookingIndex !== -1) {
+                allBookings[bookingIndex].payment_status = "CONFIRMED";
+                if (allBookings[bookingIndex].status) {
+                    allBookings[bookingIndex].status = "CONFIRMED";
+                }
+            }
+            
+            updateStatistics();
+            applyFilters();
+        } else {
+            const error = await response.json();
+            throw new Error(error.message || "Failed to confirm booking");
+        }
+    } catch (error) {
+        showNotification(error.message || "Error confirming booking", "error");
+        buttonElement.disabled = false;
+        buttonElement.innerHTML = '<i class="fas fa-check"></i> Confirm';
+    }
+}
+
+// Delete booking function
+async function deleteBooking(bookingId, rowIndex) {
+    if (!confirm(`Are you sure you want to delete booking ${bookingId}? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/bookings/${bookingId}`, {
+            method: "DELETE"
+        });
+        
+        if (response.ok) {
+            showNotification("✅ Booking deleted successfully!", "success");
+            // Remove from allBookings array and refresh
+            allBookings = allBookings.filter(b => b["Booking id"] !== bookingId);
+            updateStatistics();
+            applyFilters();
+        } else {
+            const error = await response.json();
+            throw new Error(error.message || "Failed to delete booking");
+        }
+    } catch (error) {
+        showNotification(error.message || "Error deleting booking", "error");
+    }
+}
+
+// Export to Excel function
+document.getElementById('exportBtn').addEventListener('click', async function() {
+    const exportBtn = this;
+    exportBtn.disabled = true;
+    exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing export...';
+    
+    try {
+        // Use the filtered bookings for export
+        const bookings = filteredBookings.length > 0 ? filteredBookings : allBookings;
+        
+        if (!bookings || bookings.length === 0) {
+            showNotification("No bookings data to export", "error");
+            exportBtn.disabled = false;
+            exportBtn.innerHTML = '<i class="fas fa-file-excel"></i> Export to Excel';
+            return;
+        }
+        
+        // Prepare CSV content with only the specified columns
+        const headers = tableColumns;
+        
+        // Create CSV header row
+        let csvContent = headers.map(header => {
+            let formattedHeader = header.replace(/_/g, ' ');
+            formattedHeader = formattedHeader.charAt(0).toUpperCase() + formattedHeader.slice(1).toLowerCase();
+            return formattedHeader.includes(',') ? `"${formattedHeader}"` : formattedHeader;
+        }).join(',') + '\n';
+        
+        // Add data rows
+        bookings.forEach(booking => {
+            const row = headers.map(header => {
+                let value = booking[header] || '';
+                if (typeof value === 'string') {
+                    value = value.replace(/\n/g, ' ');
+                    if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+                        value = `"${value.replace(/"/g, '""')}"`;
+                    }
+                }
+                return value;
+            });
+            csvContent += row.join(',') + '\n';
+        });
+        
+        // Create and download the file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        
+        link.href = url;
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-');
+        link.download = `INWMH_Bookings_${dateStr}_${timeStr}.csv`;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        URL.revokeObjectURL(url);
+        showNotification("✅ Excel file downloaded successfully!", "success");
+        
+    } catch (error) {
+        console.error("Export error:", error);
+        showNotification("Error exporting to Excel: " + error.message, "error");
+    } finally {
+        exportBtn.disabled = false;
+        exportBtn.innerHTML = '<i class="fas fa-file-excel"></i> Export to Excel';
+    }
+});
+
+// Event listeners for filters
+document.getElementById('sortFilter').addEventListener('change', applyFilters);
+document.getElementById('limitFilter').addEventListener('change', applyFilters);
+document.getElementById('statusFilter').addEventListener('change', applyFilters);
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('refreshBtn').addEventListener('click', () => {
+    window.location.reload();
+});
+
+// Auto-refresh every 60 seconds
+setInterval(() => {
+    const loading = document.getElementById("loading");
+    if (loading.style.display === "none") {
+        window.location.reload();
+    }
+}, 60000);
+
+// Notification function
+function showNotification(message, type) {
+    const notification = document.getElementById("notification");
+    notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+    notification.className = `notification ${type}`;
+    notification.style.display = "block";
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        notification.style.animation = "slideOut 0.3s ease";
+        setTimeout(() => {
+            notification.style.display = "none";
+            notification.style.animation = "";
+        }, 300);
+    }, 5000);
+}
 </script>
 
 </body>
